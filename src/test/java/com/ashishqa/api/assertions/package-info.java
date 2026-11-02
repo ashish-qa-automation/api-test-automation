@@ -1,4 +1,4 @@
 /**
- * HTTP-level assertion helpers. Implemented in Phase 6.
+ * HTTP-level assertion helpers for status, headers, content-type, time and JSON Schema.
  */
 package com.ashishqa.api.assertions;

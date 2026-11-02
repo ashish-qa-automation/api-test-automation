@@ -1,4 +1,4 @@
 /**
- * Small focused helpers. Classes are added only when a concrete reuse need exists.
+ * Small focused helpers such as classpath resource lookup.
  */
 package com.ashishqa.api.utilities;

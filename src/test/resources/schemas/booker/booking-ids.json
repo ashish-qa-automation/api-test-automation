@@ -1,0 +1,13 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Restful Booker booking id list",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": ["bookingid"],
+    "additionalProperties": true,
+    "properties": {
+      "bookingid": { "type": "integer" }
+    }
+  }
+}

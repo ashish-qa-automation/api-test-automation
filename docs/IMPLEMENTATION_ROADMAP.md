@@ -1,7 +1,7 @@
 # Implementation Roadmap
 
 **Project:** API Test Automation Framework  
-**Status:** Phase 0 complete pending review. No implementation code until Phase 1 is approved.
+**Status:** Phase 6 complete pending review.
 
 Work proceeds sequentially. Each phase ends with compile/test evidence, a completion report, a proposed commit, and an explicit wait for approval.
 
@@ -134,6 +134,8 @@ mvn test
 - Schema files for booking responses.
 
 **Validate:** A passing schema test and a failing-on-purpose unit test of the helper are not required if the helper is thin; a real API test that uses schema validation is required.
+
+**Validation (2 Nov 2026):** `mvn -B clean test` BUILD SUCCESS — 53 tests, 0 failures. Live create and GET matched booking JSON schemas. `GET /booking` matched the id-array schema. `POST /auth` token schema passed. Failed login returned **200** `{"reason":"Bad credentials"}`. Empty create **500** `Internal Server Error`. Missing booking **404** `Not Found`. Unauthenticated DELETE **403** `Forbidden`. Logs still redact `password` and `token`.
 
 ---
 

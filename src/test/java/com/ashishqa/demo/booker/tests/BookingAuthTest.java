@@ -2,6 +2,7 @@ package com.ashishqa.demo.booker.tests;
 
 import com.ashishqa.api.base.BaseApiTest;
 import com.ashishqa.api.logging.SensitiveDataRedactor;
+import com.ashishqa.demo.booker.assertions.BookerErrorAssert;
 import com.ashishqa.demo.booker.clients.BookingClient;
 import com.ashishqa.demo.booker.models.Booking;
 import com.ashishqa.demo.booker.models.BookingDates;
@@ -19,10 +20,7 @@ public class BookingAuthTest extends BaseApiTest {
     public void deleteWithoutTokenIsRejected() {
         int bookingId = createIsolatedBooking();
         Response response = new BookingClient(anonymousRestClient()).deleteBookingAnonymously(bookingId);
-        Assert.assertEquals(
-                response.statusCode(),
-                403,
-                "DELETE without token should be forbidden. body=" + response.asString());
+        BookerErrorAssert.forbidden(response);
         new BookingClient(restClient()).deleteBooking(bookingId);
     }
 
@@ -47,7 +45,7 @@ public class BookingAuthTest extends BaseApiTest {
                         + deleted.asString());
 
         Response missing = new BookingClient(anonymousRestClient()).getBooking(bookingId);
-        Assert.assertEquals(missing.statusCode(), 404, "Deleted booking should no longer be readable");
+        BookerErrorAssert.notFound(missing);
     }
 
     @Test(groups = "smoke")

@@ -1,5 +1,6 @@
 package com.ashishqa.demo.booker.tests;
 
+import com.ashishqa.api.assertions.HttpAssert;
 import com.ashishqa.api.base.BaseApiTest;
 import com.ashishqa.api.specifications.ResponseSpecFactory;
 import com.ashishqa.demo.booker.clients.BookingClient;
@@ -22,11 +23,7 @@ public class BookingHealthCheckTest extends BaseApiTest {
         BookingClient bookings = new BookingClient(anonymousRestClient());
         log.info("Pinging {}{}", config().baseUri(), BookingClient.PING);
         Response response = bookings.ping();
-        Assert.assertEquals(
-                response.statusCode(),
-                201,
-                "GET " + config().baseUri() + BookingClient.PING
-                        + " should return 201 Created. body=" + response.asString());
+        HttpAssert.statusIs(response, 201);
         response.then().spec(ResponseSpecFactory.statusCode(201));
         Assert.assertTrue(
                 response.asString().toLowerCase().contains("created"),

@@ -33,6 +33,12 @@ public class FrameworkSmokeTest {
     }
 
     @Test(groups = "smoke")
+    public void jsonSchemaValidatorIsOnClasspath() throws ClassNotFoundException {
+        Class.forName("io.restassured.module.jsv.JsonSchemaValidator");
+        log.info("REST Assured JSON Schema validator is available on the test classpath");
+    }
+
+    @Test(groups = "smoke")
     public void slf4jLoggerIsBound() {
         Assert.assertFalse(log.getClass().getName().contains("NOPLogger"),
                 "SLF4J should be bound to Log4j2, not a no-op logger");
