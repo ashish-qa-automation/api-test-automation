@@ -1,0 +1,8 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Foundation Smoke" verbose="1">
+    <test name="FrameworkFoundation">
+        <classes>
+            <class name="com.ashishqa.api.tests.FrameworkSmokeTest"/>
+        </classes>
+    </test>
+</suite>
