@@ -1,4 +1,4 @@
 /**
- * Restful Booker API clients. Implemented in Phases 3–7.
+ * Restful Booker API clients built on {@link com.ashishqa.api.clients.RestClient}.
  */
 package com.ashishqa.demo.booker.clients;

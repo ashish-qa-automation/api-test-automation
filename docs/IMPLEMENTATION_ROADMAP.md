@@ -82,6 +82,8 @@ mvn test
 
 **Validate:** `mvn test` hits `/ping` successfully, or fails with a clear connectivity error (not a timeout hang).
 
+**Validation (2 Nov 2026):** `mvn -B clean test` BUILD SUCCESS — 17 tests, 0 failures. Live `GET https://restful-booker.herokuapp.com/ping` returned **201 Created**.
+
 ---
 
 ## Phase 4 — Authentication and security

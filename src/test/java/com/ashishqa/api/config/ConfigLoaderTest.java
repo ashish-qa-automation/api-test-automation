@@ -110,11 +110,14 @@ public class ConfigLoaderTest {
     @Test(groups = "smoke")
     public void configManagerHoldsImmutableSnapshot() {
         ConfigManager.reset();
-        FrameworkConfig loaded = ConfigManager.initialize(
-                new ConfigLoader(new MapConfigOverrideSource(Map.of("env", "dev"), Map.of())));
-        Assert.assertSame(loaded, ConfigManager.current());
-        Assert.assertEquals(ConfigManager.current().environment(), "dev");
-        ConfigManager.reset();
+        try {
+            FrameworkConfig loaded = ConfigManager.initialize(
+                    new ConfigLoader(new MapConfigOverrideSource(Map.of("env", "dev"), Map.of())));
+            Assert.assertSame(loaded, ConfigManager.current());
+            Assert.assertEquals(ConfigManager.current().environment(), "dev");
+        } finally {
+            ConfigManager.reset();
+        }
         Assert.assertFalse(ConfigManager.isInitialized());
     }
 

@@ -4,6 +4,7 @@
         <classes>
             <class name="com.ashishqa.api.tests.FrameworkSmokeTest"/>
             <class name="com.ashishqa.api.config.ConfigLoaderTest"/>
+            <class name="com.ashishqa.demo.booker.tests.BookingHealthCheckTest"/>
         </classes>
     </test>
 </suite>

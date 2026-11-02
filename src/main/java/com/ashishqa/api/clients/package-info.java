@@ -1,4 +1,5 @@
 /**
- * Method-agnostic HTTP client used by application-specific API clients. Implemented in Phase 3.
+ * Method-agnostic HTTP client. Application clients compose {@link com.ashishqa.api.clients.RestClient}
+ * instead of calling REST Assured directly.
  */
 package com.ashishqa.api.clients;
