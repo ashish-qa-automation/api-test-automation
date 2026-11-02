@@ -1,0 +1,32 @@
+[
+  {
+    "scenario": "single character names",
+    "expectedStatus": 200,
+    "payload": {
+      "firstname": "A",
+      "lastname": "B",
+      "totalprice": 1,
+      "depositpaid": true,
+      "bookingdates": {
+        "checkin": "2026-12-01",
+        "checkout": "2026-12-02"
+      },
+      "additionalneeds": "None"
+    }
+  },
+  {
+    "scenario": "zero total price",
+    "expectedStatus": 200,
+    "payload": {
+      "firstname": "Zero",
+      "lastname": "Price",
+      "totalprice": 0,
+      "depositpaid": false,
+      "bookingdates": {
+        "checkin": "2026-12-01",
+        "checkout": "2026-12-03"
+      },
+      "additionalneeds": "None"
+    }
+  }
+]

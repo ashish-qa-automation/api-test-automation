@@ -118,6 +118,8 @@ mvn test
 
 **Validate:** Serialization round-trip test plus at least one parameterized API test.
 
+**Validation (2 Nov 2026):** `mvn -B clean test` BUILD SUCCESS — 33 tests, 0 failures. Jackson round-trip of `Booking` records passed. Parameterized live tests: valid creates round-trip, boundary `totalprice=0` returns 200, missing `firstname` / `bookingdates` / empty body return **500** (Restful Booker's actual contract, not 400). Created records were deleted with a cookie token.
+
 ---
 
 ## Phase 6 — API validation and assertion architecture

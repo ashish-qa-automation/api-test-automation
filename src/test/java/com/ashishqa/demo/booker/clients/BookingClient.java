@@ -2,6 +2,8 @@ package com.ashishqa.demo.booker.clients;
 
 import com.ashishqa.api.clients.ApiRequest;
 import com.ashishqa.api.clients.RestClient;
+import com.ashishqa.demo.booker.models.Booking;
+import com.ashishqa.demo.booker.models.CreatedBooking;
 import io.restassured.response.Response;
 
 /**
@@ -31,12 +33,24 @@ public final class BookingClient {
         return restClient.get(ApiRequest.to(BOOKING_BY_ID).anonymous().pathParam("id", id));
     }
 
-    public Response createBooking(Object body) {
+    public Response createBooking(Booking booking) {
+        return createBookingPayload(booking);
+    }
+
+    public Response createBookingPayload(Object body) {
         return restClient.post(ApiRequest.to(BOOKINGS).anonymous().body(body));
     }
 
-    public Response updateBooking(int id, Object body) {
-        return restClient.put(ApiRequest.to(BOOKING_BY_ID).pathParam("id", id).body(body));
+    public CreatedBooking createBookingTyped(Booking booking) {
+        return createBooking(booking).as(CreatedBooking.class);
+    }
+
+    public Response updateBooking(int id, Booking booking) {
+        return restClient.put(ApiRequest.to(BOOKING_BY_ID).pathParam("id", id).body(booking));
+    }
+
+    public Booking getBookingTyped(int id) {
+        return getBooking(id).as(Booking.class);
     }
 
     public Response deleteBooking(int id) {

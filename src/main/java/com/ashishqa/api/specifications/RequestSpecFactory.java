@@ -3,9 +3,12 @@ package com.ashishqa.api.specifications;
 import com.ashishqa.api.config.FrameworkConfig;
 import com.ashishqa.api.logging.RedactingLoggingFilter;
 import com.ashishqa.api.logging.SensitiveDataRedactor;
+import com.ashishqa.api.serialization.JsonCodec;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.config.HttpClientConfig;
+import io.restassured.config.ObjectMapperConfig;
 import io.restassured.config.RestAssuredConfig;
+import io.restassured.mapper.ObjectMapperType;
 import io.restassured.specification.RequestSpecification;
 
 import java.util.Objects;
@@ -51,6 +54,10 @@ public final class RequestSpecFactory {
                 .dontReuseHttpClientInstance()
                 .setParam("http.connection.timeout", config.connectTimeoutMs())
                 .setParam("http.socket.timeout", config.responseTimeoutMs());
-        return RestAssuredConfig.newConfig().httpClient(httpClientConfig);
+        return RestAssuredConfig.newConfig()
+                .httpClient(httpClientConfig)
+                .objectMapperConfig(ObjectMapperConfig.objectMapperConfig()
+                        .defaultObjectMapperType(ObjectMapperType.JACKSON_2)
+                        .jackson2ObjectMapperFactory((type, charset) -> JsonCodec.instance().mapper()));
     }
 }

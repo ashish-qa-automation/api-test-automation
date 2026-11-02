@@ -1,0 +1,32 @@
+[
+  {
+    "scenario": "missing firstname",
+    "expectedStatus": 500,
+    "payload": {
+      "lastname": "MissingFirst",
+      "totalprice": 100,
+      "depositpaid": true,
+      "bookingdates": {
+        "checkin": "2026-12-01",
+        "checkout": "2026-12-05"
+      },
+      "additionalneeds": "None"
+    }
+  },
+  {
+    "scenario": "missing bookingdates",
+    "expectedStatus": 500,
+    "payload": {
+      "firstname": "NoDates",
+      "lastname": "Case",
+      "totalprice": 100,
+      "depositpaid": true,
+      "additionalneeds": "None"
+    }
+  },
+  {
+    "scenario": "empty object",
+    "expectedStatus": 500,
+    "payload": {}
+  }
+]
