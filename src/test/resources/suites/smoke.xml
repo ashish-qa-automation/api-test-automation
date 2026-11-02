@@ -3,6 +3,7 @@
     <test name="FrameworkFoundation">
         <classes>
             <class name="com.ashishqa.api.tests.FrameworkSmokeTest"/>
+            <class name="com.ashishqa.api.config.ConfigLoaderTest"/>
         </classes>
     </test>
 </suite>

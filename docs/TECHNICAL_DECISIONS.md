@@ -105,7 +105,9 @@ Application-specific clients (`BookingClient`) own paths and payloads. They do n
 
 Properties match the existing public UI framework’s operational model, need no extra library, and map cleanly to `-Dkey=value`.
 
-Environment variable naming: uppercase the property key and replace `.` with `_`. Example: `api.baseUri` ← `API_BASE_URI`.
+Environment variable naming: uppercase the property key, replace `.` with `_`, and split camelCase. Example: `api.baseUri` → `API_BASE_URI`, `http.connectTimeoutMs` → `HTTP_CONNECT_TIMEOUT_MS`.
+
+QA committed config contains Restful Booker's publicly documented demo username and password, labelled as such in `qa.properties`. SIT, UAT and DEV keep secret fields empty. No dotenv library and no `.env.example` in this phase.
 
 ---
 

@@ -207,9 +207,10 @@ Environment names: `dev`, `qa`, `sit`, `uat`. Default: `qa`.
 Selection:
 
 ```text
--Denv=qa          first
-ENV=qa            second
-default           qa
+-Denv=qa                         first
+ENV=qa                           second
+config/framework.properties env  third
+hardcoded default                qa
 ```
 
 Value resolution for each setting:
@@ -220,6 +221,8 @@ Value resolution for each setting:
 3. Environment file             src/test/resources/config/env/{env}.properties
 4. Framework defaults           src/test/resources/config/framework.properties
 ```
+
+Environment variable names are the property key in upper snake case (`api.baseUri` → `API_BASE_URI`, `http.connectTimeoutMs` → `HTTP_CONNECT_TIMEOUT_MS`). A present blank system property clears a file value, which is how a local password can be prevented from leaking into a CI run.
 
 No dotenv library in the initial design. GitHub Actions and local shells already provide environment variables. An `.env.example` will be added only if a later phase introduces explicit `.env` loading.
 

@@ -64,6 +64,8 @@ mvn test
 
 **Validate:** Loading `qa` vs `dev` yields different base URIs. System property overrides the file. No secrets committed.
 
+**Validation (2 Nov 2026):** `mvn -B clean test` BUILD SUCCESS — 16 tests, 0 failures. `qa` loads Restful Booker; `-Denv=dev` loads `http://localhost:8080`; system properties beat environment variables; `toString()` redacts passwords.
+
 ---
 
 ## Phase 3 — Core API client architecture
