@@ -6,7 +6,7 @@ import java.util.Locale;
 
 /**
  * Authentication mechanism selected by {@code auth.type}.
- * Strategy implementations that apply these types arrive in Phase 4.
+ * {@link AuthStrategies} maps this value to a concrete {@link AuthStrategy}.
  */
 public enum AuthType {
 

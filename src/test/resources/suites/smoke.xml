@@ -4,7 +4,10 @@
         <classes>
             <class name="com.ashishqa.api.tests.FrameworkSmokeTest"/>
             <class name="com.ashishqa.api.config.ConfigLoaderTest"/>
+            <class name="com.ashishqa.api.authentication.AuthStrategiesTest"/>
+            <class name="com.ashishqa.api.logging.SensitiveDataRedactorTest"/>
             <class name="com.ashishqa.demo.booker.tests.BookingHealthCheckTest"/>
+            <class name="com.ashishqa.demo.booker.tests.BookingAuthTest"/>
         </classes>
     </test>
 </suite>

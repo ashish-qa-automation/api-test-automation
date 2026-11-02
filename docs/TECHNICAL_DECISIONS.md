@@ -130,6 +130,8 @@ Restful Booker `/ping` responded `Created` during Phase 0. That is the documente
 
 Public demo credentials (`admin` / `password123`) are part of the vendor documentation. They may live in example config with a comment that they are public demo values. They are not GitHub Secrets.
 
+Restful Booker returns HTTP 418 (`I'm a Teapot`) when `Accept` is not exactly `application/json`. REST Assured's `ContentType.JSON` sends a list of JSON media types, which triggers that response. `RequestSpecFactory` therefore sets `Accept: application/json` as a literal header. Write operations require `Cookie: token=...`, not `Authorization: Bearer`.
+
 ---
 
 ## 8. Authentication scope

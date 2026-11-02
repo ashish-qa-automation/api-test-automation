@@ -20,7 +20,9 @@ public record FrameworkConfig(
         String authPassword,
         String authToken,
         String apiKeyHeader,
-        String apiKey
+        String apiKey,
+        String authTokenEndpoint,
+        String authTokenField
 ) {
 
     public FrameworkConfig {
@@ -33,6 +35,8 @@ public record FrameworkConfig(
         authToken = Objects.requireNonNullElse(authToken, "");
         apiKeyHeader = Objects.requireNonNullElse(apiKeyHeader, "");
         apiKey = Objects.requireNonNullElse(apiKey, "");
+        authTokenEndpoint = Objects.requireNonNullElse(authTokenEndpoint, "");
+        authTokenField = (authTokenField == null || authTokenField.isBlank()) ? "token" : authTokenField.trim();
         if (connectTimeoutMs <= 0) {
             throw new ConfigurationException("http.connectTimeoutMs must be a positive integer");
         }
@@ -70,6 +74,8 @@ public record FrameworkConfig(
                 + ", authToken='" + redact(authToken) + '\''
                 + ", apiKeyHeader='" + apiKeyHeader + '\''
                 + ", apiKey='" + redact(apiKey) + '\''
+                + ", authTokenEndpoint='" + authTokenEndpoint + '\''
+                + ", authTokenField='" + authTokenField + '\''
                 + '}';
     }
 

@@ -1,5 +1,7 @@
 package com.ashishqa.api.clients;
 
+import com.ashishqa.api.authentication.AuthStrategy;
+import com.ashishqa.api.authentication.NoAuth;
 import com.ashishqa.api.config.FrameworkConfig;
 import com.ashishqa.api.specifications.RequestSpecFactory;
 import io.restassured.RestAssured;
@@ -20,13 +22,19 @@ public final class RestClient {
     private static final Logger log = LoggerFactory.getLogger(RestClient.class);
 
     private final RequestSpecFactory requestSpecFactory;
+    private final AuthStrategy authStrategy;
 
-    public RestClient(RequestSpecFactory requestSpecFactory) {
+    public RestClient(RequestSpecFactory requestSpecFactory, AuthStrategy authStrategy) {
         this.requestSpecFactory = Objects.requireNonNull(requestSpecFactory, "requestSpecFactory");
+        this.authStrategy = authStrategy == null ? NoAuth.INSTANCE : authStrategy;
     }
 
     public RestClient(FrameworkConfig config) {
-        this(new RequestSpecFactory(config));
+        this(new RequestSpecFactory(config), NoAuth.INSTANCE);
+    }
+
+    public RestClient(FrameworkConfig config, AuthStrategy authStrategy) {
+        this(new RequestSpecFactory(config), authStrategy);
     }
 
     public Response get(String path) {
@@ -60,6 +68,9 @@ public final class RestClient {
     private Response send(Method method, ApiRequest request) {
         Objects.requireNonNull(request, "request");
         RequestSpecification spec = RestAssured.given().spec(requestSpecFactory.create());
+        if (!request.isAnonymous()) {
+            authStrategy.apply(spec);
+        }
         if (!request.headers().isEmpty()) {
             spec.headers(request.headers());
         }

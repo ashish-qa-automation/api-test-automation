@@ -297,7 +297,7 @@ Known limitations that tests and docs must treat honestly:
 |------------|-------------|
 | Hosted on Heroku | Cold starts and occasional downtime. CI smoke must fail clearly, not hang. |
 | Data reset about every 10 minutes | Tests must create their own bookings. Never depend on booking id `1`. |
-| Documented quirks / bugs | Successful DELETE returns `201`. Auth for writes is cookie-based, not Bearer. Some filter/date behaviours are wrong. Tests will encode actual behaviour and document mismatches. |
+| Documented quirks / bugs | Successful DELETE returns `201`. Auth for writes is cookie-based, not Bearer. `Accept` must be exactly `application/json` or POST returns **418 I'm a Teapot**. Some filter/date behaviours are wrong. Tests encode actual behaviour. |
 | Public shared dataset | Parallel-safe unique payloads and cleanup after write tests. |
 | Not a SLA-backed service | A later optional WireMock/contract suite may isolate CI from public-internet flake. Not in Phase 1. |
 

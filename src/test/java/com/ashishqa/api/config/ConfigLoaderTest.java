@@ -14,6 +14,7 @@ public class ConfigLoaderTest {
         Assert.assertEquals(config.environment(), "qa");
         Assert.assertEquals(config.baseUri(), "https://restful-booker.herokuapp.com");
         Assert.assertEquals(config.authType(), AuthType.COOKIE_TOKEN);
+        Assert.assertEquals(config.authTokenEndpoint(), "/auth");
         Assert.assertEquals(config.connectTimeoutMs(), 15000);
         Assert.assertEquals(config.responseTimeoutMs(), 45000);
     }
@@ -105,6 +106,7 @@ public class ConfigLoaderTest {
         Assert.assertEquals(ConfigLoader.toEnvName("api.baseUri"), "API_BASE_URI");
         Assert.assertEquals(ConfigLoader.toEnvName("http.connectTimeoutMs"), "HTTP_CONNECT_TIMEOUT_MS");
         Assert.assertEquals(ConfigLoader.toEnvName("auth.apiKeyHeader"), "AUTH_API_KEY_HEADER");
+        Assert.assertEquals(ConfigLoader.toEnvName("auth.tokenEndpoint"), "AUTH_TOKEN_ENDPOINT");
     }
 
     @Test(groups = "smoke")

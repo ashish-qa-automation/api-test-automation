@@ -3,12 +3,12 @@ package com.ashishqa.api.config;
 import java.util.Map;
 import java.util.Optional;
 
-final class MapConfigOverrideSource implements ConfigOverrideSource {
+public final class MapConfigOverrideSource implements ConfigOverrideSource {
 
     private final Map<String, String> properties;
     private final Map<String, String> env;
 
-    MapConfigOverrideSource(Map<String, String> properties, Map<String, String> env) {
+    public MapConfigOverrideSource(Map<String, String> properties, Map<String, String> env) {
         this.properties = Map.copyOf(properties);
         this.env = Map.copyOf(env);
     }

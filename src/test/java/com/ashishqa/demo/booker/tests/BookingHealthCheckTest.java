@@ -19,7 +19,7 @@ public class BookingHealthCheckTest extends BaseApiTest {
 
     @Test(groups = "smoke")
     public void pingReturnsCreated() {
-        BookingClient bookings = new BookingClient(config());
+        BookingClient bookings = new BookingClient(anonymousRestClient());
         log.info("Pinging {}{}", config().baseUri(), BookingClient.PING);
         Response response = bookings.ping();
         Assert.assertEquals(

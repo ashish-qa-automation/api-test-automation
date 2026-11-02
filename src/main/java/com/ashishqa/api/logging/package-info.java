@@ -1,4 +1,5 @@
 /**
- * Request/response logging and sensitive-data redaction. Implemented in Phase 9.
+ * HTTP logging with credential redaction. {@link com.ashishqa.api.logging.SensitiveDataRedactor}
+ * must be used before request or response text is written to logs or reports.
  */
 package com.ashishqa.api.logging;

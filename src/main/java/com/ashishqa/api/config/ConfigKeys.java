@@ -22,6 +22,8 @@ public final class ConfigKeys {
     public static final String AUTH_TOKEN = "auth.token";
     public static final String AUTH_API_KEY_HEADER = "auth.apiKeyHeader";
     public static final String AUTH_API_KEY = "auth.apiKey";
+    public static final String AUTH_TOKEN_ENDPOINT = "auth.tokenEndpoint";
+    public static final String AUTH_TOKEN_FIELD = "auth.tokenField";
 
     private ConfigKeys() {
     }

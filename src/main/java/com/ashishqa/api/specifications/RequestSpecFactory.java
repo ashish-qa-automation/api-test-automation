@@ -1,17 +1,14 @@
 package com.ashishqa.api.specifications;
 
 import com.ashishqa.api.config.FrameworkConfig;
+import com.ashishqa.api.logging.RedactingLoggingFilter;
+import com.ashishqa.api.logging.SensitiveDataRedactor;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.config.HttpClientConfig;
 import io.restassured.config.RestAssuredConfig;
-import io.restassured.filter.log.LogDetail;
-import io.restassured.filter.log.RequestLoggingFilter;
-import io.restassured.filter.log.ResponseLoggingFilter;
-import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
 
 import java.util.Objects;
-import java.util.Set;
 
 /**
  * Builds a fresh REST Assured request specification from {@link FrameworkConfig}.
@@ -19,29 +16,31 @@ import java.util.Set;
  */
 public final class RequestSpecFactory {
 
-    private static final Set<String> REDACTED_HEADERS = Set.of("Authorization", "Cookie", "X-Api-Key");
-
     private final FrameworkConfig config;
+    private final SensitiveDataRedactor redactor;
 
     public RequestSpecFactory(FrameworkConfig config) {
+        this(config, new SensitiveDataRedactor());
+    }
+
+    public RequestSpecFactory(FrameworkConfig config, SensitiveDataRedactor redactor) {
         this.config = Objects.requireNonNull(config, "config");
+        this.redactor = Objects.requireNonNull(redactor, "redactor");
     }
 
     public RequestSpecification create() {
         RequestSpecBuilder builder = new RequestSpecBuilder()
                 .setBaseUri(config.baseUri())
-                .setAccept(ContentType.JSON)
+                .addHeader("Accept", "application/json")
+                .addHeader("User-Agent", "api-test-automation")
                 .setConfig(restAssuredConfig());
 
         if (!config.basePath().isBlank()) {
             builder.setBasePath(config.basePath());
         }
 
-        if (config.logRequests()) {
-            builder.addFilter(new RequestLoggingFilter(LogDetail.ALL, true, System.out, true, REDACTED_HEADERS));
-        }
-        if (config.logResponses()) {
-            builder.addFilter(new ResponseLoggingFilter(LogDetail.ALL, true, System.out));
+        if (config.logRequests() || config.logResponses()) {
+            builder.addFilter(new RedactingLoggingFilter(redactor, config.logRequests(), config.logResponses()));
         }
 
         return builder.build();

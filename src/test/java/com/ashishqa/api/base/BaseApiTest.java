@@ -1,8 +1,14 @@
 package com.ashishqa.api.base;
 
+import com.ashishqa.api.authentication.AuthStrategy;
+import com.ashishqa.api.authentication.AuthStrategies;
+import com.ashishqa.api.authentication.NoAuth;
+import com.ashishqa.api.authentication.TokenProvider;
+import com.ashishqa.api.authentication.TokenProviders;
 import com.ashishqa.api.clients.RestClient;
 import com.ashishqa.api.config.ConfigManager;
 import com.ashishqa.api.config.FrameworkConfig;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 
 /**
@@ -11,9 +17,22 @@ import org.testng.annotations.BeforeClass;
  */
 public abstract class BaseApiTest {
 
+    private TokenProvider tokenProvider;
+    private AuthStrategy authStrategy;
+
     @BeforeClass(alwaysRun = true)
     protected void initializeFramework() {
         ConfigManager.initialize();
+        RestClient anonymous = new RestClient(config(), NoAuth.INSTANCE);
+        tokenProvider = TokenProviders.from(config(), anonymous);
+        authStrategy = AuthStrategies.from(config(), tokenProvider);
+    }
+
+    @AfterMethod(alwaysRun = true)
+    protected void clearThreadToken() {
+        if (tokenProvider != null) {
+            tokenProvider.invalidate();
+        }
     }
 
     protected FrameworkConfig config() {
@@ -21,6 +40,14 @@ public abstract class BaseApiTest {
     }
 
     protected RestClient restClient() {
-        return new RestClient(config());
+        return new RestClient(config(), authStrategy);
+    }
+
+    protected RestClient anonymousRestClient() {
+        return new RestClient(config(), NoAuth.INSTANCE);
+    }
+
+    protected TokenProvider tokenProvider() {
+        return tokenProvider;
     }
 }

@@ -15,6 +15,7 @@ public final class ApiRequest {
     private final Map<String, Object> queryParams = new LinkedHashMap<>();
     private final Map<String, String> headers = new LinkedHashMap<>();
     private Object body;
+    private boolean anonymous;
 
     private ApiRequest(String path) {
         this.path = Objects.requireNonNull(path, "path");
@@ -42,6 +43,19 @@ public final class ApiRequest {
     public ApiRequest body(Object body) {
         this.body = body;
         return this;
+    }
+
+    /**
+     * Do not apply the RestClient {@link com.ashishqa.api.authentication.AuthStrategy}.
+     * Used for login calls and negative unauthorized tests.
+     */
+    public ApiRequest anonymous() {
+        this.anonymous = true;
+        return this;
+    }
+
+    public boolean isAnonymous() {
+        return anonymous;
     }
 
     public String path() {

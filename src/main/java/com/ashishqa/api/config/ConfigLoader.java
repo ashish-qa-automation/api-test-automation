@@ -63,7 +63,9 @@ public final class ConfigLoader {
                 optional(ConfigKeys.AUTH_PASSWORD, envFile, defaults),
                 optional(ConfigKeys.AUTH_TOKEN, envFile, defaults),
                 optional(ConfigKeys.AUTH_API_KEY_HEADER, envFile, defaults),
-                optional(ConfigKeys.AUTH_API_KEY, envFile, defaults)
+                optional(ConfigKeys.AUTH_API_KEY, envFile, defaults),
+                optional(ConfigKeys.AUTH_TOKEN_ENDPOINT, envFile, defaults),
+                optional(ConfigKeys.AUTH_TOKEN_FIELD, envFile, defaults)
         );
         log.info("Loaded configuration for env={} baseUri={}", config.environment(), config.baseUri());
         return config;

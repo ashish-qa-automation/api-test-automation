@@ -101,6 +101,8 @@ mvn test
 
 **Validate:** Create/update/delete with cookie token succeeds. Logs and Allure attachments do not contain the raw token.
 
+**Validation (2 Nov 2026):** `mvn -B clean test` BUILD SUCCESS — 24 tests, 0 failures. Live Restful Booker: create 200, unauthenticated DELETE 403, cookie-token PUT 200, cookie-token DELETE 201. Logs show `password` and `token` as `***`. Restful Booker returns **418** unless `Accept` is exactly `application/json`.
+
 ---
 
 ## Phase 5 — Models, serialization and test data
