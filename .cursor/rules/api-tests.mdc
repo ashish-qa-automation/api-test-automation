@@ -1,0 +1,21 @@
+---
+description: Assertions, clients, and cleanup for API tests
+globs: src/test/java/**/*.java
+alwaysApply: false
+---
+
+# API tests
+
+- Extend `com.ashishqa.api.base.BaseApiTest`. Booker tests that create rows extend `com.ashishqa.demo.booker.tests.BookerApiTest` so the booking id is deleted afterwards.
+- Call `com.ashishqa.demo.booker.clients.BookingClient` or `AuthClient`. Do not assemble `/booking` or `/auth` in the test method.
+- Status, headers, time, and JSON Schema go through `com.ashishqa.api.assertions.HttpAssert`. Booking field equality goes through `com.ashishqa.demo.booker.assertions.BookingAssert`.
+- Encode Restful Booker's real behaviour. DELETE returns 201. Writes to an unknown id return 405. Invalid creates return 500. `Accept` must stay `application/json`.
+- Put the method in a group that a suite already includes: `smoke`, `regression`, or `negative` under `src/test/resources/suites/`.
+
+```java
+// Bad: assertion and path hidden in a new helper client
+new RestAssured().get("https://restful-booker.herokuapp.com/booking/1");
+
+// Good
+HttpAssert.statusIs(new BookingClient(anonymousRestClient()).getBooking(id), 404);
+```

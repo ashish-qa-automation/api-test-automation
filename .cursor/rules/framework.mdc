@@ -1,0 +1,26 @@
+---
+description: API framework boundaries, configuration, and Maven commands for this repo
+alwaysApply: true
+---
+
+# API test framework
+
+Framework code is `com.ashishqa.api`. The Restful Booker demo is `com.ashishqa.demo.booker`. One Maven module: `com.ashishqa:api-test-automation`.
+
+- Send HTTP only through `com.ashishqa.api.clients.RestClient` and `ApiRequest`. Do not call `RestAssured.given()` from tests, and do not add a second HTTP wrapper.
+- Select auth with `com.ashishqa.api.authentication.AuthStrategy`. Restful Booker writes use `CookieTokenAuth`, not Bearer.
+- Read settings from `com.ashishqa.api.config.ConfigManager`. Change environment with `-Denv=qa` (also `dev`, `sit`, `uat`). Do not hardcode `https://restful-booker.herokuapp.com` in tests.
+- Do not assert inside `RestClient`. Do not add a TestNG retry analyzer for assertion failures.
+- Do not claim a Maven command or a GitHub Actions run succeeded unless it finished in this session.
+
+Commands already run successfully on 6 Nov 2026:
+
+```text
+mvn -B clean test
+mvn -B clean test -Psmoke
+mvn -B clean test -Pregression
+mvn -B clean test -Dgroups=smoke
+mvn -B clean test -Denv=qa
+```
+
+`.github/workflows/ci.yml` is present. GitHub has not run it. Do not add a green badge.

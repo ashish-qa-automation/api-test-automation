@@ -1,7 +1,7 @@
 # Implementation Roadmap
 
 **Project:** API Test Automation Framework  
-**Status:** Phase 9 complete pending review.
+**Status:** Phase 11 complete pending review. Phase 10 workflows are written; GitHub has not run them, so CI is not called green.
 
 Work proceeds sequentially. Each phase ends with compile/test evidence, a completion report, a proposed commit, and an explicit wait for approval.
 
@@ -226,6 +226,8 @@ Each command is run before it is listed in README.
 **Implement:** `.cursor/rules/*.mdc` and `.cursor/README.md` after the architecture exists in code. Rules will tell the agent to reuse `RestClient`, keep assertions in tests, protect credentials, and run Maven.
 
 **Validate:** Rules mention real package names and real commands from this repo.
+
+**Validation (6 Nov 2026):** `.cursor/rules/framework.mdc`, `.cursor/rules/secrets.mdc`, and `.cursor/rules/api-tests.mdc` name `RestClient`, `AuthStrategy`, `SensitiveDataRedactor`, `RedactingAllureFilter`, `HttpAssert`, `BookingClient`, and `BaseApiTest`. They include `-Denv=qa` and the Maven commands that passed in Phase 8. `.cursor/README.md` indexes them. They forbid a CI badge until GitHub Actions has actually passed.
 
 ---
 
