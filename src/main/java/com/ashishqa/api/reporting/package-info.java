@@ -1,4 +1,4 @@
 /**
- * Allure reporting helpers used by the core. Implemented in Phase 9.
+ * Allure environment data and redacted HTTP attachments.
  */
 package com.ashishqa.api.reporting;

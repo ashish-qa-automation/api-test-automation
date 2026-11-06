@@ -1,5 +1,9 @@
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
 <suite name="Regression" verbose="1" parallel="methods" thread-count="3" data-provider-thread-count="1">
+    <listeners>
+        <listener class-name="com.ashishqa.api.listeners.AllureEnvironmentListener"/>
+        <listener class-name="com.ashishqa.api.listeners.FailureInsightListener"/>
+    </listeners>
     <test name="BookingRegression">
         <groups>
             <run>

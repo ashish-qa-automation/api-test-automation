@@ -34,9 +34,13 @@ public final class RedactingLoggingFilter implements Filter {
             FilterContext ctx) {
         if (logRequest) {
             log.info(
-                    "HTTP request {} {}\nHeaders: {}\nCookies: {}\nBody: {}",
+                    "correlationId={} HTTP request {} {}",
+                    CorrelationId.current(),
                     requestSpec.getMethod(),
-                    requestSpec.getURI(),
+                    requestSpec.getURI());
+            log.debug(
+                    "correlationId={} headers={} cookies={} body={}",
+                    CorrelationId.current(),
                     redactor.redact(String.valueOf(requestSpec.getHeaders())),
                     redactor.redact(String.valueOf(requestSpec.getCookies())),
                     redactor.redact(bodyOf(requestSpec)));
@@ -44,10 +48,14 @@ public final class RedactingLoggingFilter implements Filter {
         Response response = ctx.next(requestSpec, responseSpec);
         if (logResponse) {
             log.info(
-                    "HTTP response {} {} -> {}\nBody: {}",
+                    "correlationId={} HTTP response {} {} -> {}",
+                    CorrelationId.current(),
                     requestSpec.getMethod(),
                     requestSpec.getURI(),
-                    response.statusCode(),
+                    response.statusCode());
+            log.debug(
+                    "correlationId={} body={}",
+                    CorrelationId.current(),
                     redactor.redact(response.asString()));
         }
         return response;

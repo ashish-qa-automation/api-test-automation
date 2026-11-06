@@ -307,10 +307,11 @@ DummyJSON remains the documented fallback if Restful Booker proves too unstable 
 
 ## 13. Reporting and logging
 
-- **Logs:** SLF4J API + Log4j2. Request and response bodies logged at DEBUG, always through the redactor.
-- **Correlation id:** one UUID per test, logged on every request.
-- **Reports:** Allure via TestNG listener and `AllureRestAssured` filter.
-- **Artifacts:** request/response attachments, environment name, base URI, Java version, TestNG suite name.
+- **Logs:** SLF4J API + Log4j2. Each request logs a correlation id, method and URI at INFO. Headers, cookies and bodies are logged at DEBUG, always through the redactor.
+- **Correlation id:** one UUID per test, stored on the test thread, sent as `X-Correlation-Id`, and logged on every request.
+- **Reports:** Allure via the TestNG adapter. `RedactingAllureFilter` extends `AllureRestAssured` and writes the HTTP attachments itself, because the stock filter stores cookie values and JSON secrets before they can be masked.
+- **Artifacts:** request/response attachments, environment name, base URI, Java version, OS, TestNG suite name.
+- **Failures:** `FailureInsightListener` records the classification and, when the message has them, the expected and actual values. That text is redacted before it is logged or attached.
 - **Redaction:** `Authorization`, `Cookie` token values, `password`, `token`, `accessToken`, `refreshToken`, API keys.
 
 Reports must answer: which API, which request, which response, which assertion, expected vs actual, and whether the likely cause is application, environment, data or framework.

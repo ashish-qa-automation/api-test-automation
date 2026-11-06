@@ -6,6 +6,9 @@
         </Console>
     </Appenders>
     <Loggers>
+        <Logger name="com.ashishqa.api.logging" level="DEBUG" additivity="false">
+            <AppenderRef ref="Console"/>
+        </Logger>
         <Logger name="com.ashishqa" level="INFO" additivity="false">
             <AppenderRef ref="Console"/>
         </Logger>

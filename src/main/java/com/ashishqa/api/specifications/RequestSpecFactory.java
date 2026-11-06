@@ -1,8 +1,10 @@
 package com.ashishqa.api.specifications;
 
 import com.ashishqa.api.config.FrameworkConfig;
+import com.ashishqa.api.logging.CorrelationId;
 import com.ashishqa.api.logging.RedactingLoggingFilter;
 import com.ashishqa.api.logging.SensitiveDataRedactor;
+import com.ashishqa.api.reporting.RedactingAllureFilter;
 import com.ashishqa.api.serialization.JsonCodec;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.config.HttpClientConfig;
@@ -36,7 +38,13 @@ public final class RequestSpecFactory {
                 .setBaseUri(config.baseUri())
                 .addHeader("Accept", "application/json")
                 .addHeader("User-Agent", "api-test-automation")
+                .addFilter(new RedactingAllureFilter(redactor))
                 .setConfig(restAssuredConfig());
+
+        String correlationId = CorrelationId.current();
+        if (!correlationId.isBlank()) {
+            builder.addHeader("X-Correlation-Id", correlationId);
+        }
 
         if (!config.basePath().isBlank()) {
             builder.setBasePath(config.basePath());

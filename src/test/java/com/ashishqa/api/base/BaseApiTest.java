@@ -8,8 +8,10 @@ import com.ashishqa.api.authentication.TokenProviders;
 import com.ashishqa.api.clients.RestClient;
 import com.ashishqa.api.config.ConfigManager;
 import com.ashishqa.api.config.FrameworkConfig;
+import com.ashishqa.api.logging.CorrelationId;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
 
 /**
  * Loads process configuration once per test class. HTTP clients are created per use
@@ -28,10 +30,19 @@ public abstract class BaseApiTest {
         authStrategy = AuthStrategies.from(config(), tokenProvider);
     }
 
+    @BeforeMethod(alwaysRun = true)
+    protected void startCorrelation() {
+        CorrelationId.start();
+    }
+
     @AfterMethod(alwaysRun = true)
     protected void clearThreadToken() {
-        if (tokenProvider != null) {
-            tokenProvider.invalidate();
+        try {
+            if (tokenProvider != null) {
+                tokenProvider.invalidate();
+            }
+        } finally {
+            CorrelationId.clear();
         }
     }
 

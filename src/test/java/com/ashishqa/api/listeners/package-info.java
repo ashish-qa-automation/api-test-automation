@@ -1,4 +1,4 @@
 /**
- * TestNG and Allure listeners. Implemented in later phases.
+ * TestNG listeners that write the Allure environment file and failure diagnosis.
  */
 package com.ashishqa.api.listeners;

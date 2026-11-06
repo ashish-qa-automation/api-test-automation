@@ -3,6 +3,7 @@ package com.ashishqa.api.clients;
 import com.ashishqa.api.authentication.AuthStrategy;
 import com.ashishqa.api.authentication.NoAuth;
 import com.ashishqa.api.config.FrameworkConfig;
+import com.ashishqa.api.logging.CorrelationId;
 import com.ashishqa.api.specifications.RequestSpecFactory;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
@@ -84,10 +85,16 @@ public final class RestClient {
             spec.contentType(ContentType.JSON).body(request.body());
         }
 
-        log.info("{} {}", method, request.path());
+        log.info("correlationId={} {} {}", CorrelationId.current(), method, request.path());
         try {
             Response response = spec.request(method, request.path());
-            log.info("{} {} -> {}", method, request.path(), response.statusCode());
+            log.info(
+                    "correlationId={} {} {} -> {} in {}ms",
+                    CorrelationId.current(),
+                    method,
+                    request.path(),
+                    response.statusCode(),
+                    response.getTime());
             return response;
         } catch (RuntimeException ex) {
             throw new IllegalStateException(

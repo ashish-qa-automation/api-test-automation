@@ -1,7 +1,7 @@
 # Implementation Roadmap
 
 **Project:** API Test Automation Framework  
-**Status:** Phase 8 complete pending review.
+**Status:** Phase 9 complete pending review.
 
 Work proceeds sequentially. Each phase ends with compile/test evidence, a completion report, a proposed commit, and an explicit wait for approval.
 
@@ -197,6 +197,8 @@ Each command is run before it is listed in README.
 - Failure listener that records expected vs actual when available.
 
 **Validate:** Generate Allure results from a Maven run and inspect that tokens are redacted.
+
+**Validation (6 Nov 2026):** `mvn -B clean test` BUILD SUCCESS — 66 tests, 0 failures. `target/allure-results/environment.properties` records Environment=qa, the Restful Booker base URI, Java 21.0.2, Windows 11, and suite Smoke. Attachments show `X-Correlation-Id` on each call, `Cookie: token=***`, and auth bodies as `{"token":"***"}` and `"password":"***"`. A search of the results found no `password123` and no raw token value. Logs include `correlationId=` on the request line.
 
 ---
 

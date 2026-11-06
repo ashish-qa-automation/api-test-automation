@@ -3,7 +3,7 @@ package com.ashishqa.api.logging;
 import java.util.regex.Pattern;
 
 /**
- * Masks credentials in logs. Used by HTTP logging now; Allure attachments will reuse it in Phase 9.
+ * Masks credentials in logs and Allure attachments.
  */
 public final class SensitiveDataRedactor {
 
