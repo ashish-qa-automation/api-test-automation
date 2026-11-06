@@ -29,6 +29,11 @@ public class BookerErrorAssertTest {
     }
 
     @Test(groups = "smoke")
+    public void methodNotAllowedExpects405() {
+        BookerErrorAssert.methodNotAllowed(plain(405, "Method Not Allowed"));
+    }
+
+    @Test(groups = "smoke")
     public void badCredentialsExpectsHttp200WithReason() {
         BookerErrorAssert.badCredentials(json(200, "{\"reason\":\"Bad credentials\"}"));
     }

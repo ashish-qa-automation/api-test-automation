@@ -25,6 +25,15 @@ public final class BookerErrorAssert {
     }
 
     /**
+     * PUT, PATCH and DELETE of an id that does not exist return 405, not 404.
+     * GET of a missing id is the call that returns 404.
+     */
+    public static void methodNotAllowed(Response response) {
+        HttpAssert.statusIs(response, 405);
+        assertPlainTextMentions(response, "method not allowed");
+    }
+
+    /**
      * Invalid creates return HTTP 500 with a plain-text body, not 400.
      */
     public static void invalidCreate(Response response) {

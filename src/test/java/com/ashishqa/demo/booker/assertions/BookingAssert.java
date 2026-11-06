@@ -1,7 +1,9 @@
 package com.ashishqa.demo.booker.assertions;
 
 import com.ashishqa.api.assertions.HttpAssert;
+import com.ashishqa.demo.booker.models.Booking;
 import io.restassured.response.Response;
+import org.testng.Assert;
 
 /**
  * Contract checks for successful Restful Booker JSON bodies.
@@ -33,5 +35,9 @@ public final class BookingAssert {
         HttpAssert.statusIs(response, 200);
         HttpAssert.contentTypeIsJson(response);
         HttpAssert.matchesJsonSchema(response, BookerSchemas.AUTH_TOKEN);
+    }
+
+    public static void fieldsMatch(Booking actual, Booking expected) {
+        Assert.assertEquals(actual, expected, "Booking fields diverged across calls");
     }
 }

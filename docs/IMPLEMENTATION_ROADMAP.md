@@ -1,7 +1,7 @@
 # Implementation Roadmap
 
 **Project:** API Test Automation Framework  
-**Status:** Phase 6 complete pending review.
+**Status:** Phase 7 complete pending review.
 
 Work proceeds sequentially. Each phase ends with compile/test evidence, a completion report, a proposed commit, and an explicit wait for approval.
 
@@ -152,6 +152,8 @@ mvn test
 - Document Restful Booker quirks (DELETE `201`, cookie auth, reset window) in the test notes / architecture, not by papering over them.
 
 **Validate:** Smoke and a first regression class pass against the live API. Failures are classified (API down vs assertion vs framework).
+
+**Validation (6 Nov 2026):** `mvn -B clean test` BUILD SUCCESS — 55 tests, 0 failures, including the CRUD workflow. `mvn -B test -DsuiteXmlFile=src/test/resources/suites/regression.xml` BUILD SUCCESS — 5 tests, 0 failures. Live journey: create 200, GET matched, PUT 200, PATCH partial body 200, DELETE **201 Created**, following GET **404**. Name filter returned the created id. Unauthenticated PUT and PATCH returned **403** and the booking was unchanged. Writes to an unknown id returned **405**. Negative price and inverted dates were stored. No transport failures, so no connection retry was added. Token and password stayed redacted. Maven profiles and `-Dgroups` remain Phase 8.
 
 ---
 
