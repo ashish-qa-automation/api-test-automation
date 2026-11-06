@@ -5,6 +5,11 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.util.Map;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 public class ConfigLoaderTest {
 
@@ -111,16 +116,44 @@ public class ConfigLoaderTest {
 
     @Test(groups = "smoke")
     public void configManagerHoldsImmutableSnapshot() {
-        ConfigManager.reset();
-        try {
+        ConfigManager.exclusively(() -> {
+            Assert.assertFalse(ConfigManager.isInitialized());
             FrameworkConfig loaded = ConfigManager.initialize(
                     new ConfigLoader(new MapConfigOverrideSource(Map.of("env", "dev"), Map.of())));
             Assert.assertSame(loaded, ConfigManager.current());
             Assert.assertEquals(ConfigManager.current().environment(), "dev");
+        });
+    }
+
+    @Test(groups = "smoke")
+    public void exclusiveOverrideIsInvisibleToOtherThreads() throws Exception {
+        ConfigManager.initialize(new ConfigLoader(new MapConfigOverrideSource(Map.of("env", "qa"), Map.of())));
+        ExecutorService pool = Executors.newSingleThreadExecutor();
+        CountDownLatch waiting = new CountDownLatch(1);
+        CountDownLatch read = new CountDownLatch(1);
+        try {
+            Future<String> seen = pool.submit(() -> {
+                waiting.countDown();
+                read.await(5, TimeUnit.SECONDS);
+                return ConfigManager.current().environment();
+            });
+            Assert.assertTrue(waiting.await(5, TimeUnit.SECONDS));
+            ConfigManager.exclusively(() -> {
+                ConfigManager.initialize(new ConfigLoader(new MapConfigOverrideSource(Map.of("env", "dev"), Map.of())));
+                Assert.assertEquals(ConfigManager.current().environment(), "dev");
+                read.countDown();
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException ex) {
+                    Thread.currentThread().interrupt();
+                    throw new IllegalStateException(ex);
+                }
+            });
+            Assert.assertEquals(seen.get(5, TimeUnit.SECONDS), "qa");
+            Assert.assertEquals(ConfigManager.current().environment(), "qa");
         } finally {
-            ConfigManager.reset();
+            pool.shutdownNow();
         }
-        Assert.assertFalse(ConfigManager.isInitialized());
     }
 
     private static FrameworkConfig load(Map<String, String> properties, Map<String, String> env) {

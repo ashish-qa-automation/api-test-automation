@@ -1,6 +1,12 @@
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
-<suite name="Booking Regression" verbose="1">
-    <test name="BookingWorkflows">
+<suite name="Regression" verbose="1" parallel="methods" thread-count="3" data-provider-thread-count="1">
+    <test name="BookingRegression">
+        <groups>
+            <run>
+                <include name="smoke"/>
+                <include name="regression"/>
+            </run>
+        </groups>
         <classes>
             <class name="com.ashishqa.demo.booker.tests.BookingCrudWorkflowTest"/>
             <class name="com.ashishqa.demo.booker.tests.BookingRegressionTest"/>

@@ -17,8 +17,8 @@ import org.testng.annotations.BeforeClass;
  */
 public abstract class BaseApiTest {
 
-    private TokenProvider tokenProvider;
-    private AuthStrategy authStrategy;
+    private volatile TokenProvider tokenProvider;
+    private volatile AuthStrategy authStrategy;
 
     @BeforeClass(alwaysRun = true)
     protected void initializeFramework() {

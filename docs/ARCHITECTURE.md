@@ -317,9 +317,13 @@ Reports must answer: which API, which request, which response, which assertion, 
 
 ---
 
-## 14. Execution model (to be implemented in Phase 8)
+## 14. Execution model
 
-Intended commands. They will not be documented as supported until they actually work.
+Suites live in `src/test/resources/suites/`. Each one runs methods in parallel (`parallel="methods"`, `thread-count="3"`). Data providers stay on one thread. There is no retry analyzer: a failed assertion fails the run. Phase 7 did not show transport failures, so there is no connection retry either.
+
+`mvn test` uses `smoke.xml`. Profiles select the other suites: `-Psmoke`, `-Pregression`, `-Pnegative`. `-Dgroups=` is Surefire's TestNG group filter and replaces the suite's included groups for that run. `-Denv=` selects the environment file.
+
+These commands were executed successfully on 6 Nov 2026. Phase 12 will list them in the README.
 
 ```text
 mvn clean test
@@ -328,8 +332,6 @@ mvn clean test -Psmoke
 mvn clean test -Pregression
 mvn clean test -Dgroups=smoke
 ```
-
-Suites: smoke, regression, negative. Groups on TestNG methods must match suite XML. Parallel mode: `tests` or `methods` with a modest thread count, after thread-safety of config and tokens is proven.
 
 ---
 

@@ -166,5 +166,17 @@
                 <suiteXmlFile>src/test/resources/suites/smoke.xml</suiteXmlFile>
             </properties>
         </profile>
+        <profile>
+            <id>regression</id>
+            <properties>
+                <suiteXmlFile>src/test/resources/suites/regression.xml</suiteXmlFile>
+            </properties>
+        </profile>
+        <profile>
+            <id>negative</id>
+            <properties>
+                <suiteXmlFile>src/test/resources/suites/negative.xml</suiteXmlFile>
+            </properties>
+        </profile>
     </profiles>
 </project>

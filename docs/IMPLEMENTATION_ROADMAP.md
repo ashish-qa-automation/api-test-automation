@@ -1,7 +1,7 @@
 # Implementation Roadmap
 
 **Project:** API Test Automation Framework  
-**Status:** Phase 7 complete pending review.
+**Status:** Phase 8 complete pending review.
 
 Work proceeds sequentially. Each phase ends with compile/test evidence, a completion report, a proposed commit, and an explicit wait for approval.
 
@@ -180,6 +180,8 @@ mvn clean test -Denv=qa
 ```
 
 Each command is run before it is listed in README.
+
+**Validation (6 Nov 2026):** All five commands BUILD SUCCESS, parallel methods, thread count 3. `mvn -B clean test`, `-Psmoke`, `-Dgroups=smoke` and `-Denv=qa` each ran **58** tests, 0 failures. `-Pregression` ran **5**. `-Dgroups=negative` on the smoke suite ran **7**, so the group filter excludes methods outside that group. `-Pnegative` ran **9**. `-Pregression -Dgroups=smoke` ran **1** (the CRUD workflow) and skipped the regression-only methods. No retry analyzer and no connection retry. Config swaps are hidden from other threads, and token caches stay on the calling thread.
 
 ---
 

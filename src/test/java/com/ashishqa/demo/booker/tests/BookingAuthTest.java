@@ -16,7 +16,7 @@ import org.testng.annotations.Test;
  */
 public class BookingAuthTest extends BaseApiTest {
 
-    @Test(groups = "smoke")
+    @Test(groups = {"smoke", "negative"})
     public void deleteWithoutTokenIsRejected() {
         int bookingId = createIsolatedBooking();
         Response response = new BookingClient(anonymousRestClient()).deleteBookingAnonymously(bookingId);

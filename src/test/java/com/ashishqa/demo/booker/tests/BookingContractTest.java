@@ -43,19 +43,19 @@ public class BookingContractTest extends BaseApiTest {
         BookingAssert.authTokenMatchesSchema(response);
     }
 
-    @Test(groups = "smoke")
+    @Test(groups = {"smoke", "negative"})
     public void failedAuthReturnsBadCredentialsJson() {
         Response response = new AuthClient(anonymousRestClient())
                 .createToken("not-a-user", "not-a-password");
         BookerErrorAssert.badCredentials(response);
     }
 
-    @Test(groups = "smoke")
+    @Test(groups = {"smoke", "negative"})
     public void missingBookingIsPlainTextNotFound() {
         BookerErrorAssert.notFound(new BookingClient(anonymousRestClient()).getBooking(Integer.MAX_VALUE));
     }
 
-    @Test(groups = "smoke")
+    @Test(groups = {"smoke", "negative"})
     public void emptyCreateIsServerError() {
         BookerErrorAssert.invalidCreate(
                 new BookingClient(anonymousRestClient()).createBookingPayload(Map.of()));

@@ -53,7 +53,7 @@ public class BookingPayloadTest extends BaseApiTest {
         postScenarioAndCleanup(scenario);
     }
 
-    @Test(groups = "smoke", dataProvider = "invalidBookings")
+    @Test(groups = {"smoke", "negative"}, dataProvider = "invalidBookings")
     public void invalidBookingMatchesDocumentedStatus(BookingScenario scenario) {
         postScenarioAndCleanup(scenario);
     }

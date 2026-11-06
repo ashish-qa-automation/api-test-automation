@@ -1,10 +1,17 @@
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
-<suite name="Foundation Smoke" verbose="1">
-    <test name="FrameworkFoundation">
+<suite name="Smoke" verbose="1" parallel="methods" thread-count="3" data-provider-thread-count="1">
+    <!-- Every method in this suite is in the smoke group. No retry analyzer. -->
+    <test name="Smoke">
+        <groups>
+            <run>
+                <include name="smoke"/>
+            </run>
+        </groups>
         <classes>
             <class name="com.ashishqa.api.tests.FrameworkSmokeTest"/>
             <class name="com.ashishqa.api.config.ConfigLoaderTest"/>
             <class name="com.ashishqa.api.authentication.AuthStrategiesTest"/>
+            <class name="com.ashishqa.api.authentication.ThreadLocalTokenProviderTest"/>
             <class name="com.ashishqa.api.logging.SensitiveDataRedactorTest"/>
             <class name="com.ashishqa.api.serialization.JsonCodecTest"/>
             <class name="com.ashishqa.api.utilities.ClasspathResourceTest"/>
