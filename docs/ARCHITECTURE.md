@@ -338,17 +338,19 @@ mvn clean test -Dgroups=smoke
 
 ## 15. CI/CD approach (Phase 10)
 
-GitHub Actions, not local-only scripts.
+GitHub Actions, not local-only scripts. Workflow files:
 
-| Workflow | Trigger | Job |
-|----------|---------|-----|
-| CI smoke | pull request and push to `main` | Temurin 17, `mvn -B clean test -Psmoke` |
-| Regression | `workflow_dispatch` and optionally schedule | `mvn -B clean test -Pregression` |
-| Artifacts | always on test completion | Surefire reports, `target/allure-results` |
+| Workflow | File | Trigger | Job |
+|----------|------|---------|-----|
+| CI smoke | `.github/workflows/ci.yml` | pull request and push to `main` | Temurin 17, `mvn -B clean test -Psmoke` |
+| Regression | `.github/workflows/regression.yml` | `workflow_dispatch` and Monday 06:15 UTC | `mvn -B clean test -Pregression` |
+| Artifacts | both, `if: always()` | after the Maven step | `target/surefire-reports`, `target/allure-results` |
 
-CI uses repository secrets for any non-public credential. Restful Booker demo credentials are public and do not belong in GitHub Secrets. JDK 17 is pinned in the workflow even if a developer’s machine uses JDK 21.
+The regression schedule is weekly. Restful Booker is a shared public sandbox, so a nightly run would add load without much signal. The job timeout is 20 minutes. Maven comes from the GitHub-hosted Ubuntu runner. JDK 17 is pinned in the workflow even if a developer’s machine uses JDK 21.
 
-CI will not be described as “working” until a real workflow run on GitHub succeeds.
+CI uses repository secrets for any non-public credential. Restful Booker demo credentials are public and do not belong in GitHub Secrets.
+
+These workflows are in the repository. They have not been executed on GitHub yet, so CI is not described as working and there is no status badge.
 
 ---
 

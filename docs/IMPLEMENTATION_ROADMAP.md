@@ -215,6 +215,8 @@ Each command is run before it is listed in README.
 
 **Validate:** A real GitHub Actions run. Badge is added only after that run succeeds.
 
+**Progress (6 Nov 2026):** `.github/workflows/ci.yml` and `.github/workflows/regression.yml` are written. Smoke runs on pull requests and pushes to `main`. Regression runs on demand and weekly, Monday 06:15 UTC. Both upload Surefire and Allure results even when Maven fails. No badge. `main` is ahead of `origin/main`, so GitHub has not run these workflows yet.
+
 ---
 
 ## Phase 11 — Cursor AI engineering rules
