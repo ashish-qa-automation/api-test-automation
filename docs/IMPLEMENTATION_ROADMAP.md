@@ -1,7 +1,7 @@
 # Implementation Roadmap
 
 **Project:** API Test Automation Framework  
-**Status:** Phase 11 complete pending review. Phase 10 workflows are written; GitHub has not run them, so CI is not called green.
+**Status:** Phases 0–12 are implemented locally. Phase 10 workflows are written; GitHub has not run them, so CI is not called green.
 
 Work proceeds sequentially. Each phase ends with compile/test evidence, a completion report, a proposed commit, and an explicit wait for approval.
 
@@ -238,6 +238,8 @@ Each command is run before it is listed in README.
 **Implement:** Rewrite `README.md`. Add `EXECUTION_GUIDE.md`, `CONFIGURATION_GUIDE.md`, `CONTRIBUTING.md`. Update architecture docs to match what was actually built. Keep MIT license.
 
 **Validate:** README commands are a subset of commands that have been executed successfully. No feature is listed that was not implemented.
+
+**Validation (6 Nov 2026):** `README.md`, `docs/EXECUTION_GUIDE.md`, `docs/CONFIGURATION_GUIDE.md`, and `docs/CONTRIBUTING.md` describe `RestClient`, `ConfigManager`, the three TestNG suites, and the Maven commands recorded in Phases 8 and 9. `docs/ARCHITECTURE.md` matches the packages in the tree. The MIT `LICENSE` is unchanged. No status badge. GitHub Actions is described as written and not yet run.
 
 ---
 

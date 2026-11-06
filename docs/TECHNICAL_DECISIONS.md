@@ -2,9 +2,7 @@
 
 **Project:** API Test Automation Framework  
 **Date:** 2 November 2026  
-**Status:** Proposed in Phase 0. Versions will be re-checked against Maven Central when Phase 1 writes `pom.xml`.
-
-This file records choices and the alternatives that were rejected. It is the place to disagree before code is written.
+**Status:** Implemented. The versions below are the versions in `pom.xml`. This file records the choices and the alternatives that were rejected.
 
 ---
 

@@ -3,9 +3,9 @@
 **Project:** `api-test-automation`  
 **Repository:** https://github.com/ashish-qa-automation/api-test-automation  
 **License:** MIT (already present in the repository; preserve as-is)  
-**Status:** Phase 0 — architecture only. No framework code has been implemented yet.
+**Status:** Implemented. `com.ashishqa.api` is the framework. `com.ashishqa.demo.booker` is the Restful Booker demonstration. GitHub Actions workflow files are present and have not been executed on GitHub, so CI is not described as working.
 
-This document describes the intended architecture. It is not a claim that the components already exist.
+This document describes the architecture that is in the tree.
 
 ---
 
@@ -23,20 +23,17 @@ This repository is a public, recruiter-ready demonstration of senior SDET engine
 
 ---
 
-## 2. Current repository state
+## 2. Repository contents
 
-Inspected on 2 November 2026 after cloning `origin/main`.
-
-| Item | Finding |
-|------|---------|
-| Branch | `main`, tracking `origin/main` |
+| Item | What is present |
+|------|-----------------|
+| Coordinates | `com.ashishqa:api-test-automation:1.0.0-SNAPSHOT` |
+| Language | Java 17 (`--release 17`). Maven requires JDK 17 or newer. A local run on 6 Nov 2026 used JDK 21. |
+| Build | Maven. Default suite is `src/test/resources/suites/smoke.xml`. |
+| License | `LICENSE` — MIT, Copyright 2026 Ashish Kumar |
+| Docs | This file, `IMPLEMENTATION_ROADMAP.md`, `TECHNICAL_DECISIONS.md`, `EXECUTION_GUIDE.md`, `CONFIGURATION_GUIDE.md`, `CONTRIBUTING.md` |
+| CI files | `.github/workflows/ci.yml`, `.github/workflows/regression.yml` — written, not yet run on GitHub |
 | Remote | `https://github.com/ashish-qa-automation/api-test-automation.git` |
-| History | One commit: `f504c39` — *Initial commit* |
-| Files | `LICENSE` (MIT, Copyright 2026 Ashish Kumar), `README.md` (GitHub default stub) |
-| Java / Maven | Not present. No `pom.xml`, no source tree, no CI |
-| Local JDK | Maven currently runs on JDK 21. PATH `java` is OpenJDK 11. Project target remains **Java 17** |
-
-Existing useful work to preserve: the MIT license and git history. The README will be rewritten in Phase 12 once features are implemented and validated.
 
 ---
 
@@ -48,7 +45,7 @@ Existing useful work to preserve: the MIT license and git history. The README wi
 4. **Configuration-driven execution.** Environment, timeouts, auth type and base URI change without source edits.
 5. **Instance-based HTTP, not global static state.** REST Assured request specifications are built per client/thread. This is required for safe parallel execution.
 6. **Assertions stay explicit.** Helpers may reduce duplication; they must not hide the expected business outcome.
-7. **Credentials never enter git.** Example config files contain placeholders only.
+7. **Private secrets never enter git.** `dev`, `sit`, and `uat` use placeholders. `qa.properties` contains only Restful Booker's published demo `admin` / `password123`. Override a secret with `-Dauth.password` or `AUTH_PASSWORD`.
 8. **Every abstraction earns its place.** No OAuth refresh-token machinery, no multi-module Maven build, and no retry-on-assertion-failure unless a later phase proves they are needed.
 
 ---
@@ -81,7 +78,7 @@ HTTP communication never asserts business rules. Tests never construct raw REST 
 
 ---
 
-## 5. Proposed package structure
+## 5. Package structure
 
 Single Maven module. Framework code in `src/main/java`. Test infrastructure and the demonstration application in `src/test/java`.
 
@@ -89,17 +86,17 @@ Single Maven module. Framework code in `src/main/java`. Test infrastructure and 
 api-test-automation/
 ├── pom.xml
 ├── LICENSE                          ← already present; do not replace
-├── README.md                        ← rewrite in Phase 12
+├── README.md
 ├── .gitignore
 ├── docs/
 │   ├── ARCHITECTURE.md              ← this file
 │   ├── IMPLEMENTATION_ROADMAP.md
 │   ├── TECHNICAL_DECISIONS.md
-│   ├── EXECUTION_GUIDE.md           ← Phase 12
-│   ├── CONFIGURATION_GUIDE.md       ← Phase 12
-│   └── CONTRIBUTING.md              ← Phase 12
-├── .cursor/                         ← Phase 11, based on implemented code
-├── .github/workflows/               ← Phase 10
+│   ├── EXECUTION_GUIDE.md
+│   ├── CONFIGURATION_GUIDE.md
+│   └── CONTRIBUTING.md
+├── .cursor/
+├── .github/workflows/
 └── src/
     ├── main/java/com/ashishqa/api/
     │   ├── config/                  configuration loading and typed settings
@@ -224,7 +221,7 @@ Value resolution for each setting:
 
 Environment variable names are the property key in upper snake case (`api.baseUri` → `API_BASE_URI`, `http.connectTimeoutMs` → `HTTP_CONNECT_TIMEOUT_MS`). A present blank system property clears a file value, which is how a local password can be prevented from leaking into a CI run.
 
-No dotenv library in the initial design. GitHub Actions and local shells already provide environment variables. An `.env.example` will be added only if a later phase introduces explicit `.env` loading.
+There is no dotenv loader. GitHub Actions and local shells already provide environment variables. `.env` is gitignored and is not read.
 
 Committed files must not contain real secrets. Restful Booker’s documented public demo credentials may appear in example comments or in a clearly labelled public-demo property file, because they are part of the API’s public documentation, not private credentials.
 
@@ -241,7 +238,8 @@ Extensible `AuthStrategy` applied by `RequestSpecFactory`:
 | `BearerTokenAuth` | `Authorization: Bearer` | JWT / DummyJSON-style APIs |
 | `ApiKeyAuth` | configurable header | Generic reuse |
 | `CookieTokenAuth` | `Cookie: token=` | Restful Booker write operations |
-| `OAuth2ClientCredentialsAuth` | token endpoint → Bearer | Interface ready; implement only if the chosen demo API needs it |
+
+`auth.type` accepts `none`, `basic`, `bearer`, `apiKey`, and `cookieToken`. OAuth2 client-credentials and refresh-token rotation are not implemented.
 
 Token caching is `ThreadLocal`, not a static shared token. Parallel tests must not steal or overwrite each other’s tokens.
 
@@ -324,15 +322,19 @@ Suites live in `src/test/resources/suites/`. Each one runs methods in parallel (
 
 `mvn test` uses `smoke.xml`. Profiles select the other suites: `-Psmoke`, `-Pregression`, `-Pnegative`. `-Dgroups=` is Surefire's TestNG group filter and replaces the suite's included groups for that run. `-Denv=` selects the environment file.
 
-These commands were executed successfully on 6 Nov 2026. Phase 12 will list them in the README.
+These commands finished with BUILD SUCCESS on 6 Nov 2026. The README and `EXECUTION_GUIDE.md` list this same set.
 
 ```text
-mvn clean test
-mvn clean test -Denv=qa
-mvn clean test -Psmoke
-mvn clean test -Pregression
-mvn clean test -Dgroups=smoke
+mvn -B clean test
+mvn -B clean test -Denv=qa
+mvn -B clean test -Psmoke
+mvn -B clean test -Pregression
+mvn -B clean test -Pnegative
+mvn -B clean test -Dgroups=smoke
+mvn -B clean test -Dgroups=negative
 ```
+
+On that date, before the Allure tests were added, `-Psmoke`, `-Dgroups=smoke`, and `-Denv=qa` each ran 58 tests. `-Pregression` ran 5. `-Pnegative` ran 9. `-Dgroups=negative` on the smoke suite ran 7. `-Pregression -Dgroups=smoke` ran 1. After reporting was added, `mvn -B clean test` ran 66 tests, 0 failures. `-Dgroups` replaces the groups included by the suite file for that run.
 
 ---
 
@@ -370,7 +372,7 @@ No change to `com.ashishqa.api` should be required unless the new API introduces
 ## 17. Quality rules (non-negotiable)
 
 1. No hardcoded base URIs in tests.
-2. No credentials in source or committed config.
+2. No private credentials in source or committed config. The QA file may contain only Restful Booker's published demo `admin` / `password123`.
 3. No assertions inside `RestClient`.
 4. No shared mutable static tokens or request specs across threads.
 5. No blanket retry analyzer on assertion failure.

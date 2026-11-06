@@ -67,6 +67,13 @@
         <dependency>
             <groupId>io.qameta.allure</groupId>
             <artifactId>allure-rest-assured</artifactId>
+            <version>${allure.version}</version>
+        </dependency>
+        <!-- Direct dependency: RedactingAllureFilter imports io.qameta.allure.attachment. -->
+        <dependency>
+            <groupId>io.qameta.allure</groupId>
+            <artifactId>allure-attachments</artifactId>
+            <version>${allure.version}</version>
         </dependency>
         <dependency>
             <groupId>org.testng</groupId>
